@@ -1,6 +1,6 @@
 -- Current sql file was generated after introspecting the database
 -- If you want to run this migration please uncomment this code before executing migrations
-/*
+
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" varchar(32) NOT NULL,
@@ -88,4 +88,3 @@ ALTER TABLE "services" ADD CONSTRAINT "services_users_fk" FOREIGN KEY ("user_id"
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_users_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "service_has_professional" ADD CONSTRAINT "service_has_professional_professionals_fk" FOREIGN KEY ("professional") REFERENCES "public"."professionals"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "service_has_professional" ADD CONSTRAINT "service_has_professional_services_fk" FOREIGN KEY ("service") REFERENCES "public"."services"("id") ON DELETE no action ON UPDATE no action;
-*/
