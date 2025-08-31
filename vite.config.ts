@@ -19,7 +19,8 @@ export default defineConfig({
 						instances: [{ browser: 'chromium' }]
 					},
 					include: ['tests/**/*.svelte.{test,spec}.{js,ts}'],
-					exclude: ['tests/**/*.{test,spec}.{js,ts}']
+					exclude: ['tests/**/*.{test,spec}.{js,ts}'],
+					setupFiles: ['dotenv/config']
 				},
 				resolve: {
 					alias: {
@@ -33,7 +34,8 @@ export default defineConfig({
 					name: 'server',
 					environment: 'node',
 					include: ['tests/**/*.{test,spec}.{js,ts}'],
-					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}']
+					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}'],
+					setupFiles: ['dotenv/config']
 				},
 				resolve: {
 					alias: {
