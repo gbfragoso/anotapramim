@@ -1,5 +1,6 @@
-import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
+import { resolve } from 'path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -17,8 +18,13 @@ export default defineConfig({
 						provider: 'playwright',
 						instances: [{ browser: 'chromium' }]
 					},
-					include: ['test/**/*.svelte.{test,spec}.{js,ts}'],
-					exclude: ['test/**/*.{test,spec}.{js,ts}']
+					include: ['tests/**/*.svelte.{test,spec}.{js,ts}'],
+					exclude: ['tests/**/*.{test,spec}.{js,ts}']
+				},
+				resolve: {
+					alias: {
+						$lib: resolve('./src/lib')
+					}
 				}
 			},
 			{
@@ -26,8 +32,13 @@ export default defineConfig({
 				test: {
 					name: 'server',
 					environment: 'node',
-					include: ['test/**/*.{test,spec}.{js,ts}'],
-					exclude: ['test/**/*.svelte.{test,spec}.{js,ts}']
+					include: ['tests/**/*.{test,spec}.{js,ts}'],
+					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}']
+				},
+				resolve: {
+					alias: {
+						$lib: resolve('./src/lib')
+					}
 				}
 			}
 		]
