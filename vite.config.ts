@@ -33,7 +33,12 @@ export default defineConfig({
 					name: 'server',
 					environment: 'node',
 					include: ['tests/**/*.{test,spec}.{js,ts}'],
-					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}']
+					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}'],
+					poolOptions: {
+						threads: {
+							singleThread: true
+						}
+					}
 				},
 				resolve: {
 					alias: {

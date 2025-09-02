@@ -3,6 +3,7 @@ import { users } from '$lib/database/schema';
 import { lower } from '$lib/database/utils';
 import { InternalServerError, NotFoundError, ValidationError } from '$lib/infra/errors';
 import password from '$lib/model/password';
+import validator from 'validator';
 import { eq } from 'drizzle-orm';
 
 async function create(data: any) {
@@ -10,8 +11,9 @@ async function create(data: any) {
 		if (!data.username || !data.email || !data.password) {
 			throw new ValidationError('Dados obrigatórios não foram fornecidos.');
 		}
-		if (!data.role) {
-			data.role = 'user';
+
+		if (!validator.isEmail(data.email)) {
+			throw new ValidationError('Formato de e-mail inválido.');
 		}
 
 		await validateUniqueEmail(data.email);

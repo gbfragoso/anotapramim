@@ -9,6 +9,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const result = await user.create(data);
 		return json(result, { status: 201 });
 	} catch (error) {
+		console.log(error);
 		if (error instanceof ValidationError) {
 			return json(error, { status: error.statusCode });
 		}

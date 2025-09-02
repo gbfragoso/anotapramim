@@ -41,6 +41,7 @@ describe('POST /api/v1/users', () => {
 			expect(Date.parse(body.createdAt)).not.toBeNaN();
 			expect(Date.parse(body.updatedAt)).not.toBeNaN();
 		});
+
 		test('With duplicated username', async () => {
 			const response1 = await fetch('http://localhost:5173/api/v1/users', {
 				method: 'POST',
@@ -66,6 +67,7 @@ describe('POST /api/v1/users', () => {
 
 			expect(response2.status).toBe(400);
 		});
+
 		test('With duplicated email', async () => {
 			const response1 = await fetch('http://localhost:5173/api/v1/users', {
 				method: 'POST',
@@ -90,6 +92,32 @@ describe('POST /api/v1/users', () => {
 			});
 
 			expect(response2.status).toBe(400);
+		});
+
+		test('With invalid email format', async () => {
+			const response = await fetch('http://localhost:5173/api/v1/users', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					username: 'testuser',
+					email: 'invalid-email',
+					password: 'admin123'
+				})
+			});
+			expect(response.status).toBe(400);
+		});
+
+		test('With empty required fields', async () => {
+			const response = await fetch('http://localhost:5173/api/v1/users', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					username: '',
+					email: '',
+					password: ''
+				})
+			});
+			expect(response.status).toBe(400);
 		});
 	});
 });
