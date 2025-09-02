@@ -21,7 +21,8 @@ export default ts.config(
 			globals: { ...globals.browser, ...globals.node }
 		},
 		rules: {
-			'no-undef': 'off'
+			'no-undef': 'off',
+			'no-explicit-any': 'off' // Allow usage of 'any' type
 		}
 	},
 	{

@@ -6,7 +6,7 @@ import password from '$lib/model/password';
 import validator from 'validator';
 import { eq } from 'drizzle-orm';
 
-async function create(data: any) {
+async function create(data: { username: string; email: string; password: string }) {
 	try {
 		if (!data.username || !data.email || !data.password) {
 			throw new ValidationError('Dados obrigatórios não foram fornecidos.');
@@ -24,26 +24,6 @@ async function create(data: any) {
 		return result[0];
 	} catch (error) {
 		console.log(error);
-		if (error instanceof ValidationError) {
-			throw error;
-		}
-		throw new InternalServerError(error as Error);
-	}
-}
-
-async function update(data: any) {
-	try {
-		if (!data.username || !data.email || !data.password) {
-			throw new ValidationError('Dados obrigatórios não foram fornecidos.');
-		}
-
-		await validateUniqueEmail(data.email);
-		await validateUniqueUsername(data.username);
-		data.password = await password.hash(data.password);
-
-		const result = await db.update(users).set(data).returning();
-		return result[0];
-	} catch (error) {
 		if (error instanceof ValidationError) {
 			throw error;
 		}
