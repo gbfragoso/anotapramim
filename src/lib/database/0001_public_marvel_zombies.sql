@@ -5,10 +5,7 @@ CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" varchar(32) NOT NULL,
 	"email" varchar(72) NOT NULL,
-	"name" varchar(100) NOT NULL,
-	"password" varchar(1024) NOT NULL,
-	"type" varchar(30) NOT NULL,
-	"role" varchar(30) NOT NULL,
+	"password" varchar(100) NOT NULL,
 	"referrer" uuid,
 	"apikey" varchar(100),
 	"created_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
@@ -78,13 +75,3 @@ CREATE TABLE "service_has_professional" (
 	"professional" uuid NOT NULL,
 	CONSTRAINT "service_has_professional_pk" PRIMARY KEY("service","professional")
 );
---> statement-breakpoint
-ALTER TABLE "customers" ADD CONSTRAINT "customers_users_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "events" ADD CONSTRAINT "events_customers_fk" FOREIGN KEY ("customer_id") REFERENCES "public"."customers"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "events" ADD CONSTRAINT "events_professionals_fk" FOREIGN KEY ("professional_id") REFERENCES "public"."professionals"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "events" ADD CONSTRAINT "events_services_fk" FOREIGN KEY ("service_id") REFERENCES "public"."services"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "professionals" ADD CONSTRAINT "professionals_users_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "services" ADD CONSTRAINT "services_users_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "sessions" ADD CONSTRAINT "sessions_users_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "service_has_professional" ADD CONSTRAINT "service_has_professional_professionals_fk" FOREIGN KEY ("professional") REFERENCES "public"."professionals"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "service_has_professional" ADD CONSTRAINT "service_has_professional_services_fk" FOREIGN KEY ("service") REFERENCES "public"."services"("id") ON DELETE no action ON UPDATE no action;
