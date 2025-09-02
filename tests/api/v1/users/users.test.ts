@@ -4,6 +4,7 @@ import { orchestrator } from '../../../orchestrator';
 import password from '$lib/model/password';
 
 beforeAll(async () => {
+	await orchestrator.waitForAllServices();
 	await orchestrator.clearDatabase();
 	await orchestrator.runPendingMigrations();
 });
