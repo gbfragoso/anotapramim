@@ -23,12 +23,26 @@ async function create(data: { username: string; email: string; password: string 
 		const result = await db.insert(users).values(data).returning();
 		return result[0];
 	} catch (error) {
-		console.log(error);
 		if (error instanceof ValidationError) {
 			throw error;
 		}
 		throw new InternalServerError(error as Error);
 	}
+}
+
+async function findOneById(id: string) {
+	const result = await db
+		.select()
+		.from(users)
+		.where(eq(lower(users.id), id));
+
+	if (result.length === 0) {
+		throw new NotFoundError(
+			'O id informado não foi encontrado no sistema',
+			'Verifique se o email está digitado corretamente.'
+		);
+	}
+	return result[0];
 }
 
 async function findOneByEmail(email: string) {
@@ -39,7 +53,7 @@ async function findOneByEmail(email: string) {
 
 	if (result.length === 0) {
 		throw new NotFoundError(
-			'O id informado não foi encontrado no sistema',
+			'O email informado não foi encontrado no sistema',
 			'Verifique se o email está digitado corretamente.'
 		);
 	}
@@ -54,8 +68,8 @@ async function findOneByUsername(username: string) {
 
 	if (result.length === 0) {
 		throw new NotFoundError(
-			'O id informado não foi encontrado no sistema',
-			'Verifique se o email está digitado corretamente.'
+			'O username informado não foi encontrado no sistema',
+			'Verifique se o username está digitado corretamente.'
 		);
 	}
 	return result[0];
@@ -94,6 +108,7 @@ async function validateUniqueUsername(username: string) {
 
 const user = {
 	create,
+	findOneById,
 	findOneByEmail,
 	findOneByUsername
 };
