@@ -1,4 +1,6 @@
-async function create(userId: string) {}
+async function create(userId: string) {
+	return userId;
+}
 
 const session = {
 	create
