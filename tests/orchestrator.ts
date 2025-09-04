@@ -1,6 +1,7 @@
-import retry from 'async-retry';
 import { db } from '$lib/database/connection';
-import { sql } from 'drizzle-orm';
+import user from '$lib/model/user';
+import { faker } from '@faker-js/faker';
+import retry from 'async-retry';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
 async function waitForAllServices() {
@@ -27,15 +28,24 @@ async function runPendingMigrations() {
 }
 
 async function clearDatabase() {
-	await db.execute(sql`drop schema if exists drizzle cascade;`);
-	await db.execute(sql`drop schema if exists public cascade;`);
-	await db.execute(sql`create schema public;`);
+	await db.execute(
+		'drop schema if exists drizzle cascade; drop schema if exists public cascade; create schema public;'
+	);
+}
+
+async function createFakeUser(data?: { username?: string; email?: string; password?: string }) {
+	return await user.create({
+		username: data?.username || faker.internet.username().replace(/[_.-]/g, ''),
+		email: data?.email || faker.internet.email(),
+		password: data?.password || 'validpassword'
+	});
 }
 
 const orchestrator = {
 	waitForAllServices,
 	runPendingMigrations,
-	clearDatabase
+	clearDatabase,
+	createFakeUser
 };
 
 export { orchestrator };

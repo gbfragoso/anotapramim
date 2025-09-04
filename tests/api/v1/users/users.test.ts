@@ -1,7 +1,7 @@
+import password from '$lib/model/password';
 import { version as uuidv4 } from 'uuid';
 import { beforeAll, describe, expect, test } from 'vitest';
 import { orchestrator } from '../../../orchestrator';
-import password from '$lib/model/password';
 
 beforeAll(async () => {
 	await orchestrator.waitForAllServices();
@@ -24,6 +24,7 @@ describe('POST /api/v1/users', () => {
 
 			expect(response.status).toBe(201);
 			const body = await response.json();
+			console.log(body);
 			expect(body).toEqual({
 				id: body.id,
 				username: 'newuser',
