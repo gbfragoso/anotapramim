@@ -1,8 +1,8 @@
 import { db } from '$lib/database/connection';
+import migration from '$lib/database/migration';
 import user from '$lib/model/user';
 import { faker } from '@faker-js/faker';
 import retry from 'async-retry';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
 async function waitForAllServices() {
 	await waitForWebServer();
@@ -24,7 +24,7 @@ async function waitForAllServices() {
 }
 
 async function runPendingMigrations() {
-	await migrate(db, { migrationsFolder: './src/lib/database' });
+	await migration.runPendingMigrations();
 }
 
 async function clearDatabase() {
