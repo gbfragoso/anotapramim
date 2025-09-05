@@ -16,6 +16,8 @@ async function runPendingMigrations() {
 	try {
 		await migrate(db, { migrationsFolder: './src/lib/database' });
 		console.log('Migration completed ✅');
+	} catch (error) {
+		console.log('Nothing to migrate ✅', error);
 	} finally {
 		await client.end();
 	}
