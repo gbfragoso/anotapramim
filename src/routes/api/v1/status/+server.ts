@@ -23,10 +23,9 @@ export const GET: RequestHandler = async () => {
 		};
 		return json(result, { status: 200 });
 	} catch (error) {
-		console.log(error);
 		if (error instanceof ValidationError) {
 			return json(error, { status: error.statusCode });
 		}
-		return json(new InternalServerError(error as Error));
+		return json(new InternalServerError({ cause: error as Error }));
 	}
 };

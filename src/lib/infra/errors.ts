@@ -1,10 +1,17 @@
+type ErrorData = {
+	message?: string;
+	action?: string;
+	cause?: Error;
+	statusCode?: number;
+};
+
 export class InternalServerError extends Error {
 	statusCode: number;
 	action: string;
 
-	constructor(error: Error, statusCode?: number) {
+	constructor({ cause, statusCode }: ErrorData) {
 		super('Um erro interno não esperado aconteceu.', {
-			cause: error
+			cause
 		});
 		this.name = 'InternalServerError';
 		this.action = 'Entre em contato com o suporte';
@@ -25,9 +32,9 @@ export class ServiceError extends Error {
 	statusCode: number;
 	action: string;
 
-	constructor(message: string, cause?: string) {
+	constructor({ message, cause }: ErrorData) {
 		super(message || 'Serviço indisponível no momento.', {
-			cause: cause ? new Error(cause) : undefined
+			cause
 		});
 		this.name = 'ServiceError';
 		this.action = 'Verifique se o serviço está disponível.';
@@ -48,9 +55,9 @@ export class ValidationError extends Error {
 	statusCode: number;
 	action: string;
 
-	constructor(message: string, action?: string, cause?: string) {
+	constructor({ message, action, cause }: ErrorData) {
 		super(message || 'Um erro de validação ocorreu.', {
-			cause: cause ? new Error(cause) : undefined
+			cause
 		});
 		this.name = 'ValidationError';
 		this.action = action || 'Verifique os dados enviados e tente novamente.';
@@ -71,9 +78,9 @@ export class NotFoundError extends Error {
 	statusCode: number;
 	action: string;
 
-	constructor(message: string, action?: string, cause?: string) {
+	constructor({ message, action, cause }: ErrorData) {
 		super(message || 'Não foi possível encontrar este recurso no sistema.', {
-			cause: cause ? new Error(cause) : undefined
+			cause
 		});
 		this.name = 'NotFoundError';
 		this.action = action || 'Verifique se os parâmetros enviados na consulta estão certos.';
@@ -94,12 +101,12 @@ export class UnauthorizedError extends Error {
 	statusCode: number;
 	action: string;
 
-	constructor(data: { message: string; action?: string; cause?: string }) {
-		super(data.message || 'Credenciais inválidas', {
-			cause: data.cause ? new Error(data.cause) : undefined
+	constructor({ message, action, cause }: ErrorData) {
+		super(message || 'Credenciais inválidas', {
+			cause
 		});
 		this.name = 'UnauthorizedError';
-		this.action = data.action || 'Verifique as informações e tente novamente.';
+		this.action = action || 'Verifique as informações e tente novamente.';
 		this.statusCode = 401;
 	}
 

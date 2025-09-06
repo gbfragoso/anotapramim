@@ -1,7 +1,7 @@
 import argon2 from 'argon2';
 
 function getTimeCost() {
-	return process.env.NODE_ENV === 'test' ? 1 : 3;
+	return process.env.NODE_ENV !== 'production' ? 1 : 3;
 }
 
 async function hash(password: string) {

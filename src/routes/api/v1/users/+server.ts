@@ -12,6 +12,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		if (error instanceof ValidationError) {
 			return json(error, { status: error.statusCode });
 		}
-		return json(new InternalServerError(error as Error));
+		return json(new InternalServerError({ cause: error as Error }));
 	}
 };
