@@ -28,6 +28,9 @@ async function validatePassword(providedPassword: string, storedHashedPassword: 
 			});
 		}
 	} catch (error) {
+		if (error instanceof UnauthorizedError) {
+			throw error;
+		}
 		throw new InternalServerError({
 			cause: error as Error
 		});
