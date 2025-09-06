@@ -28,9 +28,8 @@ async function runPendingMigrations() {
 }
 
 async function clearDatabase() {
-	await db.execute(
-		'drop schema if exists drizzle cascade; drop schema if exists public cascade; create schema public;'
-	);
+	await db.execute('delete from users;');
+	await db.execute('delete from sessions;');
 }
 
 async function createFakeUser(data?: { username?: string; email?: string; password?: string }) {

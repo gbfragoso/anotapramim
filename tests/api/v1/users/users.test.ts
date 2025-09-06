@@ -5,8 +5,8 @@ import { orchestrator } from '../../../orchestrator';
 
 beforeAll(async () => {
 	await orchestrator.waitForAllServices();
-	await orchestrator.clearDatabase();
 	await orchestrator.runPendingMigrations();
+	await orchestrator.clearDatabase();
 });
 
 describe('POST /api/v1/users', () => {
@@ -37,7 +37,6 @@ describe('POST /api/v1/users', () => {
 				updatedAt: body.updatedAt
 			});
 
-			await password.hash('admin123');
 			expect(await password.verify(body.password, 'admin123')).toBe(true);
 			expect(uuidv4(body.id)).toBe(4);
 			expect(Date.parse(body.createdAt)).not.toBeNaN();

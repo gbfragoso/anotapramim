@@ -2,6 +2,7 @@ import { env } from '$env/dynamic/private';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
+import * as schema from './schema';
 
 if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
@@ -12,7 +13,7 @@ async function runPendingMigrations() {
 		onnotice: () => {}
 	});
 
-	const db = drizzle(client);
+	const db = drizzle(client, { schema });
 	try {
 		await migrate(db, { migrationsFolder: './src/lib/database' });
 		console.log('Migration completed ✅');

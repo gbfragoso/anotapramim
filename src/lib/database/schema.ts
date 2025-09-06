@@ -96,6 +96,9 @@ export const sessions = pgTable('sessions', {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	token: varchar({ length: 256 }).notNull(),
 	userId: uuid('user_id').notNull(),
+	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' })
+		.default(sql`(now() AT TIME ZONE 'utc'::text)`)
+		.notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
 		.default(sql`(now() AT TIME ZONE 'utc'::text)`)
 		.notNull(),
