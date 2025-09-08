@@ -3,8 +3,8 @@ import { users } from '$lib/database/schema';
 import { lower } from '$lib/database/utils';
 import { InternalServerError, NotFoundError, ValidationError } from '$lib/infra/errors';
 import password from '$lib/model/password';
-import validator from 'validator';
 import { eq } from 'drizzle-orm';
+import validator from 'validator';
 
 async function create(data: { username: string; email: string; password: string }) {
 	try {
@@ -31,10 +31,7 @@ async function create(data: { username: string; email: string; password: string 
 }
 
 async function findOneById(id: string) {
-	const result = await db
-		.select()
-		.from(users)
-		.where(eq(lower(users.id), id));
+	const result = await db.select().from(users).where(eq(users.id, id));
 
 	if (result.length === 0) {
 		throw new NotFoundError({

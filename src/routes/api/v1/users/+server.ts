@@ -1,7 +1,7 @@
+import { InternalServerError, ValidationError } from '$lib/infra/errors';
 import user from '$lib/model/user';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { InternalServerError, ValidationError } from '$lib/infra/errors';
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
