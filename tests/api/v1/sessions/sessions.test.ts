@@ -123,8 +123,8 @@ describe('POST /api/v1/sessions', () => {
 			const createdAt = new Date(body.createdAt).setMilliseconds(0);
 			expect(expiresAt - createdAt).toBe(session.EXPIRATION_IN_MILLISECONDS);
 
-			var combinedCookieHeader = response.headers.get('Set-Cookie') as string;
-			var splitCookieHeaders = setCookieParser.splitCookiesString(combinedCookieHeader);
+			const combinedCookieHeader = response.headers.get('Set-Cookie') as string;
+			const splitCookieHeaders = setCookieParser.splitCookiesString(combinedCookieHeader);
 			const parsedSetCookie = setCookieParser.parse(splitCookieHeaders, {
 				map: true
 			});

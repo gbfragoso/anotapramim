@@ -2,6 +2,7 @@ type ErrorData = {
 	message?: string;
 	action?: string;
 	cause?: Error;
+	fieldErrors?: object;
 	statusCode?: number;
 };
 
@@ -52,14 +53,16 @@ export class ServiceError extends Error {
 }
 
 export class ValidationError extends Error {
+	fieldErrors: object;
 	statusCode: number;
 	action: string;
 
-	constructor({ message, action, cause }: ErrorData) {
+	constructor({ message, action, fieldErrors, cause }: ErrorData) {
 		super(message || 'Um erro de validação ocorreu.', {
 			cause
 		});
 		this.name = 'ValidationError';
+		this.fieldErrors = fieldErrors as object;
 		this.action = action || 'Verifique os dados enviados e tente novamente.';
 		this.statusCode = 400;
 	}
@@ -68,6 +71,7 @@ export class ValidationError extends Error {
 		return {
 			name: this.name,
 			message: this.message,
+			fieldErrors: this.fieldErrors,
 			action: this.action,
 			status_code: this.statusCode
 		};

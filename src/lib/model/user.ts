@@ -4,7 +4,13 @@ import { lower } from '$lib/database/utils';
 import { InternalServerError, NotFoundError, ValidationError } from '$lib/infra/errors';
 import password from '$lib/model/password';
 import { eq } from 'drizzle-orm';
-import validator from 'validator';
+import { z } from 'zod';
+
+const userSchema = z.object({
+	username: z.string('Formato de nome de usuário inválido').max(32, 'Nome de usuário muito grande'),
+	email: z.email('Email inválido.').max(72, 'Endereço de email muito grande'),
+	password: z.string()
+});
 
 async function create(data: { username: string; email: string; password: string }) {
 	try {
@@ -12,8 +18,12 @@ async function create(data: { username: string; email: string; password: string 
 			throw new ValidationError({ message: 'Dados obrigatórios não foram fornecidos.' });
 		}
 
-		if (!validator.isEmail(data.email)) {
-			throw new ValidationError({ message: 'Formato de e-mail inválido.' });
+		const validatedInput = userSchema.safeParse(data);
+		if (!validatedInput.success) {
+			throw new ValidationError({
+				message: 'Verifique as informações dos campos',
+				fieldErrors: z.flattenError(validatedInput.error).fieldErrors
+			});
 		}
 
 		await validateUniqueEmail(data.email);
