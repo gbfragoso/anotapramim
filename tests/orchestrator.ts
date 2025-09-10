@@ -1,5 +1,6 @@
 import { db } from '$lib/database/connection';
 import migration from '$lib/database/migration';
+import session from '$lib/model/session';
 import user from '$lib/model/user';
 import { faker } from '@faker-js/faker';
 import retry from 'async-retry';
@@ -40,11 +41,16 @@ async function createFakeUser(data?: { username?: string; email?: string; passwo
 	});
 }
 
+async function createFakeSession(userId: string) {
+	return await session.create(userId);
+}
+
 const orchestrator = {
 	waitForAllServices,
 	runPendingMigrations,
 	clearDatabase,
-	createFakeUser
+	createFakeUser,
+	createFakeSession
 };
 
 export { orchestrator };

@@ -1,6 +1,8 @@
+import session from '$lib/model/session';
+import setCookieParser from 'set-cookie-parser';
+import { version } from 'uuid';
 import { beforeAll, describe, expect, test } from 'vitest';
 import { orchestrator } from '../../../orchestrator';
-import session from '$lib/model/session';
 
 beforeAll(async () => {
 	await orchestrator.waitForAllServices();
@@ -104,6 +106,15 @@ describe('POST /api/v1/sessions', () => {
 			expect(response.status).toBe(200);
 
 			const body = await response.json();
+			expect(body).toEqual({
+				id: body.id,
+				token: body.token,
+				userId: body.userId,
+				expiresAt: body.expiresAt,
+				createdAt: body.createdAt,
+				updatedAt: body.updatedAt
+			});
+			expect(version(body.id)).toBe(4);
 			expect(Date.parse(body.expiresAt)).not.toBeNaN();
 			expect(Date.parse(body.createdAt)).not.toBeNaN();
 			expect(Date.parse(body.updatedAt)).not.toBeNaN();
@@ -112,13 +123,19 @@ describe('POST /api/v1/sessions', () => {
 			const createdAt = new Date(body.createdAt).setMilliseconds(0);
 			expect(expiresAt - createdAt).toBe(session.EXPIRATION_IN_MILLISECONDS);
 
-			expect(body).toEqual({
-				id: body.id,
-				token: body.token,
-				userId: body.userId,
-				expiresAt: body.expiresAt,
-				createdAt: body.createdAt,
-				updatedAt: body.updatedAt
+			const combinedCookieHeader = response.headers.get('Set-Cookie') as string;
+			const splitCookieHeaders = setCookieParser.splitCookiesString(combinedCookieHeader);
+			const parsedSetCookie = setCookieParser.parse(splitCookieHeaders, {
+				map: true
+			});
+
+			expect(parsedSetCookie.session_id).toEqual({
+				name: 'session_id',
+				value: body.token,
+				maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
+				path: '/',
+				sameSite: 'Lax',
+				httpOnly: true
 			});
 		});
 	});

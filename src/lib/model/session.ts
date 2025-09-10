@@ -1,6 +1,7 @@
-import crypto from 'crypto';
 import { db } from '$lib/database/connection';
 import { sessions } from '$lib/database/schema';
+import crypto from 'crypto';
+import { and, eq, gte, sql } from 'drizzle-orm';
 
 const EXPIRATION_IN_MILLISECONDS = 60 * 60 * 24 * 1000; // 1 Day
 
@@ -20,9 +21,20 @@ async function create(userId: string) {
 	return session[0];
 }
 
+async function findOneValidByToken(token: string) {
+	const session = await db
+		.select()
+		.from(sessions)
+		.where(and(eq(sessions.token, token), gte(sessions.expiresAt, sql<Date>`NOW()`)))
+		.limit(1);
+
+	return session[0];
+}
+
 const session = {
 	EXPIRATION_IN_MILLISECONDS,
-	create
+	create,
+	findOneValidByToken
 };
 
 export default session;

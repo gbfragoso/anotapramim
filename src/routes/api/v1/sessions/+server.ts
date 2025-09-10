@@ -1,13 +1,13 @@
-import session from '$lib/model/session';
-import auth from '$lib/model/auth';
-import { json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
 import {
 	InternalServerError,
-	ValidationError,
 	NotFoundError,
-	UnauthorizedError
+	UnauthorizedError,
+	ValidationError
 } from '$lib/infra/errors';
+import auth from '$lib/model/auth';
+import session from '$lib/model/session';
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ cookies, request }) => {
 	try {
