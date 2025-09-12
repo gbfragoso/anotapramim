@@ -1,15 +1,12 @@
 import session from '$lib/model/session';
-import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
+import whatsapp from '$lib/model/whatsapp';
+import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { orchestrator } from '../../../../orchestrator';
 
 beforeAll(async () => {
 	await orchestrator.waitForAllServices();
 	await orchestrator.runPendingMigrations();
 	await orchestrator.clearDatabase();
-});
-
-afterAll(async () => {
-	await orchestrator.clearTestInstances();
 });
 
 describe('GET instances', () => {
@@ -38,6 +35,8 @@ describe('GET instances', () => {
 					status: 'close'
 				}
 			]);
+
+			await whatsapp.deleteInstance(testUser.id, fakeInstance.id);
 		});
 		test('Without any instance', async () => {
 			const testUser = await orchestrator.createFakeUser();

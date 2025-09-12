@@ -1,5 +1,6 @@
 import { db } from '$lib/database/connection';
 import { sessions } from '$lib/database/schema';
+import { UnauthorizedError } from '$lib/infra/errors';
 import crypto from 'crypto';
 import { and, eq, gte, sql } from 'drizzle-orm';
 
@@ -31,10 +32,28 @@ async function findOneValidByToken(token: string) {
 	return session[0];
 }
 
+async function validateSession(sessionId: string) {
+	if (!sessionId) {
+		throw new UnauthorizedError({
+			message: 'Usuário não possui sessão ativa.',
+			action: 'Verifique se este usuário está logado e tente novamente'
+		});
+	}
+	const validSession = await session.findOneValidByToken(sessionId);
+	if (!validSession) {
+		throw new UnauthorizedError({
+			message: 'Usuário não possui sessão ativa.',
+			action: 'Verifique se este usuário está logado e tente novamente'
+		});
+	}
+	return validSession;
+}
+
 const session = {
 	EXPIRATION_IN_MILLISECONDS,
 	create,
-	findOneValidByToken
+	findOneValidByToken,
+	validateSession
 };
 
 export default session;

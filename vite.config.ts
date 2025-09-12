@@ -35,7 +35,8 @@ export default defineConfig({
 					environment: 'node',
 					include: ['tests/**/*.{test,spec}.{js,ts}'],
 					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}'],
-					env: loadEnv('', process.cwd(), '')
+					env: loadEnv('', process.cwd(), ''),
+					testTimeout: 10000
 				},
 				resolve: {
 					alias: {

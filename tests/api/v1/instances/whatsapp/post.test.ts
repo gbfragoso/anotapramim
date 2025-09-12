@@ -1,16 +1,13 @@
 import session from '$lib/model/session';
+import whatsapp from '$lib/model/whatsapp';
 import { version as uuidv4 } from 'uuid';
-import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
+import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { orchestrator } from '../../../../orchestrator';
 
 beforeAll(async () => {
 	await orchestrator.waitForAllServices();
 	await orchestrator.runPendingMigrations();
 	await orchestrator.clearDatabase();
-});
-
-afterAll(async () => {
-	await orchestrator.clearTestInstances();
 });
 
 describe('POST Create instance', () => {
@@ -45,6 +42,8 @@ describe('POST Create instance', () => {
 				createdAt: body.createdAt,
 				updatedAt: body.updatedAt
 			});
+
+			await whatsapp.deleteInstance(testUser.id, body.id);
 		});
 	});
 	describe('Unauthorized user', () => {

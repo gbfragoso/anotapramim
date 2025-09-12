@@ -96,10 +96,24 @@ async function deleteInstance(userId: string, name: string) {
 	return deletedInstance[0];
 }
 
+async function restartInstance(name: string) {
+	const response = await fetch(`${baseUrl}/instance/restart/${name}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			apikey: apikey as string
+		}
+	});
+
+	const body = await response.json();
+	return body;
+}
+
 const whatsapp = {
 	createInstance,
 	fetchInstances,
-	deleteInstance
+	deleteInstance,
+	restartInstance
 };
 
 export default whatsapp;

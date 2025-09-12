@@ -1,6 +1,5 @@
 import { db } from '$lib/database/connection';
 import migration from '$lib/database/migration';
-import { instances } from '$lib/database/schema';
 import session from '$lib/model/session';
 import user from '$lib/model/user';
 import whatsapp from '$lib/model/whatsapp';
@@ -34,22 +33,10 @@ async function clearDatabase() {
 	try {
 		await db.execute('delete from users;');
 		await db.execute('delete from sessions;');
+		await db.execute('delete from instances;');
 	} catch (error) {
 		console.log(error);
 		await migration.runPendingMigrations();
-	}
-}
-
-async function clearTestInstances() {
-	try {
-		const result = await db
-			.select({ name: instances.id, userId: instances.userId })
-			.from(instances);
-		for (let i = 0; i < result.length; i++) {
-			await whatsapp.deleteInstance(result[0].userId, result[0].name);
-		}
-	} catch (error) {
-		console.log(error);
 	}
 }
 
@@ -73,7 +60,6 @@ const orchestrator = {
 	waitForAllServices,
 	runPendingMigrations,
 	clearDatabase,
-	clearTestInstances,
 	createFakeUser,
 	createFakeSession,
 	createFakeWhatsappInstance
