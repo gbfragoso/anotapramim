@@ -1,7 +1,9 @@
 import { db } from '$lib/database/connection';
 import migration from '$lib/database/migration';
+import { instances } from '$lib/database/schema';
 import session from '$lib/model/session';
 import user from '$lib/model/user';
+import whatsapp from '$lib/model/whatsapp';
 import { faker } from '@faker-js/faker';
 import retry from 'async-retry';
 
@@ -29,8 +31,26 @@ async function runPendingMigrations() {
 }
 
 async function clearDatabase() {
-	await db.execute('delete from users;');
-	await db.execute('delete from sessions;');
+	try {
+		await db.execute('delete from users;');
+		await db.execute('delete from sessions;');
+	} catch (error) {
+		console.log(error);
+		await migration.runPendingMigrations();
+	}
+}
+
+async function clearTestInstances() {
+	try {
+		const result = await db
+			.select({ name: instances.id, userId: instances.userId })
+			.from(instances);
+		for (let i = 0; i < result.length; i++) {
+			await whatsapp.deleteInstance(result[0].userId, result[0].name);
+		}
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 async function createFakeUser(data?: { username?: string; email?: string; password?: string }) {
@@ -45,12 +65,18 @@ async function createFakeSession(userId: string) {
 	return await session.create(userId);
 }
 
+async function createFakeWhatsappInstance(userId: string, instanceName: string) {
+	return await whatsapp.createInstance(userId, instanceName);
+}
+
 const orchestrator = {
 	waitForAllServices,
 	runPendingMigrations,
 	clearDatabase,
+	clearTestInstances,
 	createFakeUser,
-	createFakeSession
+	createFakeSession,
+	createFakeWhatsappInstance
 };
 
 export { orchestrator };

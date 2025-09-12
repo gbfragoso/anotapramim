@@ -1,17 +1,3 @@
--- Current sql file was generated after introspecting the database
--- If you want to run this migration please uncomment this code before executing migrations
-
-CREATE TABLE "users" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"username" varchar(32) NOT NULL,
-	"email" varchar(72) NOT NULL,
-	"password" varchar(100) NOT NULL,
-	"referrer" uuid,
-	"apikey" varchar(100),
-	"created_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE "customers" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(100) NOT NULL,
@@ -39,6 +25,14 @@ CREATE TABLE "events" (
 	"end" timestamp with time zone NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "instances" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"name" varchar(70) NOT NULL,
+	"user_id" uuid NOT NULL,
+	"created_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "professionals" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(100) NOT NULL,
@@ -47,6 +41,12 @@ CREATE TABLE "professionals" (
 	"user_id" uuid NOT NULL,
 	"created_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "service_has_professional" (
+	"service" uuid NOT NULL,
+	"professional" uuid NOT NULL,
+	CONSTRAINT "service_has_professional_pk" PRIMARY KEY("service","professional")
 );
 --> statement-breakpoint
 CREATE TABLE "services" (
@@ -71,8 +71,13 @@ CREATE TABLE "sessions" (
 	"updated_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "service_has_professional" (
-	"service" uuid NOT NULL,
-	"professional" uuid NOT NULL,
-	CONSTRAINT "service_has_professional_pk" PRIMARY KEY("service","professional")
+CREATE TABLE "users" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"username" varchar(32) NOT NULL,
+	"email" varchar(72) NOT NULL,
+	"password" varchar(100) NOT NULL,
+	"referrer" uuid,
+	"apikey" varchar(100),
+	"created_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL
 );

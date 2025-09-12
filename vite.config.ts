@@ -1,6 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { resolve } from 'path';
+import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -33,7 +34,8 @@ export default defineConfig({
 					name: 'server',
 					environment: 'node',
 					include: ['tests/**/*.{test,spec}.{js,ts}'],
-					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}']
+					exclude: ['tests/**/*.svelte.{test,spec}.{js,ts}'],
+					env: loadEnv('', process.cwd(), '')
 				},
 				resolve: {
 					alias: {

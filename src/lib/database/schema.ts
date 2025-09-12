@@ -11,6 +11,18 @@ import {
 	varchar
 } from 'drizzle-orm/pg-core';
 
+export const instances = pgTable('instances', {
+	id: uuid().primaryKey().notNull(),
+	name: varchar({ length: 70 }).notNull(),
+	userId: uuid('user_id').notNull(),
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+		.default(sql`(now() AT TIME ZONE 'utc'::text)`)
+		.notNull(),
+	updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
+		.default(sql`(now() AT TIME ZONE 'utc'::text)`)
+		.notNull()
+});
+
 export const users = pgTable('users', {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	username: varchar({ length: 32 }).notNull(),
