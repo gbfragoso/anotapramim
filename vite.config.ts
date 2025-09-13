@@ -1,8 +1,10 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
+import { fetch } from 'cross-fetch';
 import { resolve } from 'path';
 import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
+global.fetch = fetch;
 
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],

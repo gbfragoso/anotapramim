@@ -11,5 +11,81 @@ services:
       POSTGRES_DB: local
     volumes:
       - pgdata:/var/lib/postgresql/data
+  evolution:
+    image: evoapicloud/evolution-api:v2.3.0
+    volumes:
+      - evolution_instances:/evolution/instances
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - AUTHENTICATION_API_KEY=9f86d081884c7d659a2feaa0c55ad01a
+      - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+      - AUTHENTICATION_TYPE=apikey
+      - CACHE_LOCAL_ENABLED=false
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_PREFIX_KEY=evolution
+      - CACHE_REDIS_SAVE_INSTANCES=false
+      - CACHE_REDIS_URI=redis://redis:6379/1
+      - CHATWOOT_ENABLED=false
+      - CONFIG_SESSION_PHONE_CLIENT=Bitlogic Software
+      - CONFIG_SESSION_PHONE_NAME=Chrome
+      - DATABASE_CONNECTION_CLIENT_NAME=evolution
+      - DATABASE_CONNECTION_URI=postgres://root:mysecretpassword@db:5432/evolution
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_SAVE_DATA_CHATS=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_HISTORIC=true
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_LABELS=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DEL_INSTANCE=false
+      - DIFY_ENABLED=false
+      - LANGUAGE=pt
+      - N8N_ENABLED=true
+      - OPENAI_ENABLED=true
+      - QRCODE_LIMIT=30
+      - TYPEBOT_API_VERSION=latest
+      - TYPEBOT_ENABLED=false
+      - WA_BUSINESS_LANGUAGE=pt_BR
+      - WA_BUSINESS_TOKEN_WEBHOOK=evolution
+      - WA_BUSINESS_URL=https://graph.facebook.com
+      - WA_BUSINESS_VERSION=v20.0
+      - WEBHOOK_EVENTS_APPLICATION_STARTUP=false
+      - WEBHOOK_EVENTS_CALL=true
+      - WEBHOOK_EVENTS_CHATS_DELETE=true
+      - WEBHOOK_EVENTS_CHATS_SET=true
+      - WEBHOOK_EVENTS_CHATS_UPDATE=true
+      - WEBHOOK_EVENTS_CHATS_UPSERT=true
+      - WEBHOOK_EVENTS_CONNECTION_UPDATE=true
+      - WEBHOOK_EVENTS_CONTACTS_SET=true
+      - WEBHOOK_EVENTS_CONTACTS_UPDATE=true
+      - WEBHOOK_EVENTS_CONTACTS_UPSERT=true
+      - WEBHOOK_EVENTS_ERRORS=false
+      - WEBHOOK_EVENTS_ERRORS_WEBHOOK=
+      - WEBHOOK_EVENTS_GROUPS_UPDATE=true
+      - WEBHOOK_EVENTS_GROUPS_UPSERT=true
+      - WEBHOOK_EVENTS_GROUP_PARTICIPANTS_UPDATE=true
+      - WEBHOOK_EVENTS_LABELS_ASSOCIATION=true
+      - WEBHOOK_EVENTS_LABELS_EDIT=true
+      - WEBHOOK_EVENTS_MESSAGES_DELETE=true
+      - WEBHOOK_EVENTS_MESSAGES_EDITED=true
+      - WEBHOOK_EVENTS_MESSAGES_SET=true
+      - WEBHOOK_EVENTS_MESSAGES_UPDATE=true
+      - WEBHOOK_EVENTS_MESSAGES_UPSERT=true
+      - WEBHOOK_EVENTS_PRESENCE_UPDATE=true
+      - WEBHOOK_EVENTS_QRCODE_UPDATED=true
+      - WEBHOOK_EVENTS_SEND_MESSAGE=true
+      - WEBHOOK_EVENTS_TYPEBOT_CHANGE_STATUS=false
+      - WEBHOOK_EVENTS_TYPEBOT_START=false
+      - WEBHOOK_GLOBAL_ENABLED=false
+      - WEBHOOK_GLOBAL_URL=''
+      - WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS=false
+      - WEBSOCKET_ENABLED=true
+      - WEBSOCKET_GLOBAL_EVENTS=false
 volumes:
+  evolution_instances:
+    name: evolution_data
   pgdata:
