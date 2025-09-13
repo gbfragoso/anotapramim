@@ -12,14 +12,9 @@ import type { RequestHandler } from './$types';
 export const GET: RequestHandler = async ({ cookies }) => {
 	try {
 		const sessionId = cookies.get('session_id') as string;
-		const validSession = await session.findOneValidByToken(sessionId);
-		if (!validSession) {
-			throw new UnauthorizedError({
-				message: 'Usuário não possui sessão ativa.',
-				action: 'Verifique se este usuário está logado e tente novamente'
-			});
-		}
+		const validSession = await session.validateSession(sessionId);
 		const validUser = await user.findOneById(validSession.userId);
+
 		return json(validUser, { status: 200 });
 	} catch (error) {
 		if (

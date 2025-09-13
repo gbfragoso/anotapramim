@@ -2,6 +2,7 @@ import { db } from '$lib/database/connection';
 import migration from '$lib/database/migration';
 import session from '$lib/model/session';
 import user from '$lib/model/user';
+import whatsapp from '$lib/model/whatsapp';
 import { faker } from '@faker-js/faker';
 import retry from 'async-retry';
 
@@ -29,8 +30,14 @@ async function runPendingMigrations() {
 }
 
 async function clearDatabase() {
-	await db.execute('delete from users;');
-	await db.execute('delete from sessions;');
+	try {
+		await db.execute('delete from users;');
+		await db.execute('delete from sessions;');
+		await db.execute('delete from instances;');
+	} catch (error) {
+		console.log(error);
+		await migration.runPendingMigrations();
+	}
 }
 
 async function createFakeUser(data?: { username?: string; email?: string; password?: string }) {
@@ -45,12 +52,17 @@ async function createFakeSession(userId: string) {
 	return await session.create(userId);
 }
 
+async function createFakeWhatsappInstance(userId: string, instanceName: string) {
+	return await whatsapp.createInstance(userId, instanceName);
+}
+
 const orchestrator = {
 	waitForAllServices,
 	runPendingMigrations,
 	clearDatabase,
 	createFakeUser,
-	createFakeSession
+	createFakeSession,
+	createFakeWhatsappInstance
 };
 
 export { orchestrator };

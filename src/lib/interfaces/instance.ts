@@ -1,0 +1,50 @@
+export default interface Instance {
+	id: string;
+	name: string;
+	connectionStatus: string;
+	ownerJid: string;
+	profileName: string;
+	profilePicUrl: string;
+	integration: string;
+	number: string;
+	businessId: string;
+	token: string;
+	clientName: string;
+	disconnectionReasonCode: number;
+	disconnectionObject: string;
+	disconnectionAt: string;
+	createdAt: string;
+	updatedAt: string;
+	Chatwoot: string;
+	Proxy: {
+		id: string;
+		enabled: true;
+		host: string;
+		port: string;
+		protocol: string;
+		username: string;
+		password: string;
+		createdAt: string;
+		updatedAt: string;
+		instanceId: string;
+	};
+	Rabbitmq: string;
+	Nats: string;
+	Sqs: string;
+	Websocket: string;
+	Setting: {
+		id: string;
+		rejectCall: false;
+		msgCall: string;
+		groupsIgnore: true;
+		alwaysOnline: false;
+		readMessages: false;
+		readStatus: false;
+		syncFullHistory: false;
+		wavoipToken: string;
+		createdAt: string;
+		updatedAt: string;
+		instanceId: string;
+	};
+	_count: { Message: number; Contact: number; Chat: number };
+}
