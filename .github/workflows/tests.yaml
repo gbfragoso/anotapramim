@@ -5,8 +5,8 @@ on:
     branches: [main]
 
 env:
-  DATABASE_URL: postgres://root:mysecretpassword@localhost:5432/local
-  WHATSAPP_URL: http://localhost:8080
+  DATABASE_URL: postgres://root:mysecretpassword@127.0.0.1:5432/local
+  WHATSAPP_URL: http://127.0.0.1:8080
   WHATSAPP_API_KEY: 9f86d081884c7d659a2feaa0c55ad01a
   WHATSAPP_WEBHOOK: https://teste.com.br
   PROXY_HOST: proxyhost
