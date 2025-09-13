@@ -34,6 +34,7 @@ async function clearDatabase() {
 		await db.execute('delete from users;');
 		await db.execute('delete from sessions;');
 		await db.execute('delete from instances;');
+		await db.execute('delete from customers;');
 	} catch (error) {
 		console.log(error);
 		await migration.runPendingMigrations();

@@ -44,8 +44,7 @@ export const customers = pgTable('customers', {
 	phone: varchar({ length: 50 }).notNull(),
 	address: varchar({ length: 200 }),
 	email: varchar({ length: 100 }),
-	birthday: date(),
-	parent: varchar({ length: 100 }),
+	birthday: date({ mode: 'date' }),
 	cpf: varchar({ length: 11 }),
 	userId: uuid('user_id').notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
