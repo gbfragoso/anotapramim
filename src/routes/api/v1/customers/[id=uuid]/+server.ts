@@ -1,20 +1,16 @@
 import { InternalServerError, UnauthorizedError, ValidationError } from '$lib/infra/errors';
+import customer from '$lib/model/customer';
 import session from '$lib/model/session';
-import whatsapp from '$lib/model/whatsapp';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ cookies, request }) => {
+export const GET: RequestHandler = async ({ cookies, params }) => {
 	try {
 		const sessionId = cookies.get('session_id') as string;
 		const validSession = await session.validateSession(sessionId);
-		const data = await request.json();
-		if (!data.instanceName) {
-			throw new ValidationError({ message: 'O nome da instância é obrigatório' });
-		}
-		const instance = await whatsapp.createInstance(validSession.userId, data.instanceName);
+		const result = await customer.fetch(validSession.userId, params.id);
 
-		return json(instance, { status: 201 });
+		return json(result, { status: 200 });
 	} catch (error) {
 		if (error instanceof ValidationError || error instanceof UnauthorizedError) {
 			return json(error, { status: error.statusCode });
@@ -23,13 +19,13 @@ export const POST: RequestHandler = async ({ cookies, request }) => {
 	}
 };
 
-export const GET: RequestHandler = async ({ cookies }) => {
+export const DELETE: RequestHandler = async ({ cookies, params }) => {
 	try {
 		const sessionId = cookies.get('session_id') as string;
 		const validSession = await session.validateSession(sessionId);
-		const instances = await whatsapp.fetchInstances(validSession.userId);
+		const result = await customer.remove(validSession.userId, params.id);
 
-		return json(instances, { status: 200 });
+		return json(result, { status: 200 });
 	} catch (error) {
 		if (error instanceof ValidationError || error instanceof UnauthorizedError) {
 			return json(error, { status: error.statusCode });

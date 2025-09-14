@@ -16,13 +16,14 @@ export const POST: RequestHandler = async ({ cookies, request }) => {
 		return json(result, { status: 200 });
 	} catch (error) {
 		if (error instanceof ValidationError || error instanceof UnauthorizedError) {
-			return json(error, { status: 401 });
+			return json(error, { status: error.statusCode });
 		}
 		if (error instanceof ZodError) {
-			throw new ValidationError({
+			const zodError = new ValidationError({
 				message: 'Verifique as informações dos campos',
 				fieldErrors: z.flattenError(error).fieldErrors
 			});
+			return json(zodError, { status: 400 });
 		}
 		return json(new InternalServerError({ cause: error as Error }));
 	}
