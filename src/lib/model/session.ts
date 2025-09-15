@@ -4,7 +4,7 @@ import { UnauthorizedError } from '$lib/infra/errors';
 import crypto from 'crypto';
 import { and, eq, gte, sql } from 'drizzle-orm';
 
-const EXPIRATION_IN_MILLISECONDS = 60 * 60 * 24 * 1000; // 1 Day
+const EXPIRATION_IN_MILLISECONDS = 60 * 60 * 24 * 30 * 1000;
 
 async function create(userId: string) {
 	const token = crypto.randomBytes(48).toString('hex');
