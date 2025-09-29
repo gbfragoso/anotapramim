@@ -13,9 +13,7 @@ beforeAll(async () => {
 describe('POST Create instance', () => {
 	describe('Authorized user', () => {
 		test('With valid data', async () => {
-			const testUser = await orchestrator.createFakeUser({
-				username: 'WhastappPostInstanceTest'
-			});
+			const testUser = await orchestrator.createFakeUser();
 			const session = await orchestrator.createFakeSession(testUser.id);
 			const response = await fetch('http://localhost:5173/api/v1/instances/whatsapp', {
 				method: 'POST',

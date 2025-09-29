@@ -12,9 +12,7 @@ beforeAll(async () => {
 describe('GET instances', () => {
 	describe('Authorized user', () => {
 		test('With one instance', async () => {
-			const testUser = await orchestrator.createFakeUser({
-				username: 'WhastappGetInstanceTest'
-			});
+			const testUser = await orchestrator.createFakeUser();
 			const session = await orchestrator.createFakeSession(testUser.id);
 			const fakeInstance = await orchestrator.createFakeWhatsappInstance(testUser.id, 'vitest');
 			const response = await fetch('http://localhost:5173/api/v1/instances/whatsapp', {
