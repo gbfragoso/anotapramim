@@ -11,9 +11,7 @@ beforeAll(async () => {
 describe('GET /api/v1/user', () => {
 	describe('Default user', () => {
 		test('With valid session', async () => {
-			const createdUser = await orchestrator.createFakeUser({
-				username: 'UserWithValidSession'
-			});
+			const createdUser = await orchestrator.createFakeUser();
 			const session = await orchestrator.createFakeSession(createdUser.id);
 
 			const response = await fetch('http://localhost:5173/api/v1/user', {
@@ -55,9 +53,7 @@ describe('GET /api/v1/user', () => {
 			});
 		});
 		test('With expired session', async () => {
-			const createdUser = await orchestrator.createFakeUser({
-				username: 'UserWithExpiredSession'
-			});
+			const createdUser = await orchestrator.createFakeUser();
 			vi.useFakeTimers({ toFake: ['Date'] });
 			vi.setSystemTime(new Date(Date.now() - session.EXPIRATION_IN_MILLISECONDS));
 			const fakeSession = await orchestrator.createFakeSession(createdUser.id);

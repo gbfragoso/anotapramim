@@ -12,9 +12,7 @@ beforeAll(async () => {
 describe('PUT instances', () => {
 	describe('Authorized user', () => {
 		test('Restart instance', async () => {
-			const testUser = await orchestrator.createFakeUser({
-				username: 'WhastappPutInstanceTest'
-			});
+			const testUser = await orchestrator.createFakeUser();
 			const session = await orchestrator.createFakeSession(testUser.id);
 			const fakeInstance = await orchestrator.createFakeWhatsappInstance(testUser.id, 'vitest');
 			const response = await fetch(

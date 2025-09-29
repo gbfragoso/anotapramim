@@ -11,9 +11,7 @@ beforeAll(async () => {
 describe('DELETE instances', () => {
 	describe('Authorized user', () => {
 		test('With one instance', async () => {
-			const testUser = await orchestrator.createFakeUser({
-				username: 'WhastappDeleteInstanceTest'
-			});
+			const testUser = await orchestrator.createFakeUser();
 			const session = await orchestrator.createFakeSession(testUser.id);
 			const fakeInstance = await orchestrator.createFakeWhatsappInstance(testUser.id, 'vitest');
 			const response = await fetch(
