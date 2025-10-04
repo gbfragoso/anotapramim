@@ -30,7 +30,7 @@
 				>
 			</a>
 			<a
-				href="/contact"
+				href="/contato"
 				class="inline-flex items-center justify-center rounded-lg border border-gray-300 px-5 py-3 text-center text-base font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-800"
 			>
 				Fale conosco
@@ -479,7 +479,7 @@
 								clip-rule="evenodd"
 							></path></svg
 						>
-						<span>Atualizações gratuitas: <span class="font-semibold">36 meses</span></span>
+						<span>Atualizações gratuitas </span>
 					</li>
 					<li class="flex items-center space-x-3">
 						<!-- Icon -->
@@ -731,7 +731,7 @@
 			&nbsp; Anota pra mim?
 		</a>
 		<p class="my-6 text-gray-500 dark:text-gray-400">
-			Open-source library of over 400+ web components and interactive elements built for better web.
+			O Anota pra mim? é um produto da Bitlogic Software
 		</p>
 		<ul class="mb-6 flex flex-wrap items-center justify-center text-gray-900 dark:text-white">
 			<li>
@@ -745,7 +745,14 @@
 			</li>
 		</ul>
 		<span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-			>© 2025 <a href="/" class="hover:underline">Bitlogic Software™</a>. All Rights Reserved.</span
-		>
+			>Rua Teófilo Coelho, 74 - 2º andar - Conceição, Itabuna / BA - CEP: 45605-268 | "Anota pra
+			mim?" é uma marca registrada de Bitlogic Software | CNPJ: 36.716.245/0001-67. Os preços
+			anunciados neste site ou via e-mail promocional podem ser alterados sem prévio aviso. A
+			Bitlogic Software não é responsável por erros descritivos. Este site trabalha 100% em
+			criptografia SSL. Clique aqui e veja as políticas de nossa empresa. © 2025 <a
+				href="/"
+				class="hover:underline">Bitlogic Software™</a
+			>. All Rights Reserved.
+		</span>
 	</div>
 </footer>
